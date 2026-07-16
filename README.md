@@ -1,13 +1,17 @@
 # Jieli Linux Toolchain One-Click Install
 
-A simple Bash script that installs the official Jieli Linux compiler toolchain on your machine. It downloads the latest package from Jieli’s pkgman service and extracts it to `/opt/jieli`, so you can build Jieli SDKs with `make` on Linux.
+A simple Bash script that installs the official Jieli Linux compiler toolchain and postbuild tools. It downloads packages from Jieli’s pkgman service so you can build Jieli SDKs with `make` on Linux. It also installs required system libraries via `apt` so the tools can run.
 
-After a successful install, the compiler is available at `/opt/jieli/pi32v2/bin/clang`.
+After a successful install:
+
+- Compiler: `/opt/jieli/pi32v2/bin/clang`
+- Postbuild: `/opt/utils/fw_add` (and related tools)
+- Apt deps: `libsm6`, `libxkbcommon0`, `libgbm1`, `libgl1-mesa-glx` (or `libgl1`), `libegl1`
 
 ## Requirements
 
-- Linux with `curl`, `tar`, and `xz`
-- Root privileges (or `sudo`) to write under `/opt`
+- Debian/Ubuntu Linux with `curl`, `tar`, `xz`, and `apt`
+- Root privileges (or `sudo`) to write under `/opt` and install packages
 
 ## Usage
 
@@ -16,7 +20,7 @@ chmod +x install.sh
 ./install.sh
 ```
 
-Reinstall over an existing toolchain:
+Reinstall over existing tools:
 
 ```bash
 ./install.sh --force
@@ -24,10 +28,12 @@ Reinstall over an existing toolchain:
 
 Optional environment variables:
 
-| Variable           | Default                                          | Description      |
-|--------------------|--------------------------------------------------|------------------|
-| `JL_TOOLCHAIN_URL` | `http://pkgman.jieliapp.com/s/linux-toolchain`   | Download URL     |
-| `JL_INSTALL_DIR`   | `/opt/jieli`                                     | Install path     |
+| Variable           | Default                                           | Description              |
+|--------------------|---------------------------------------------------|--------------------------|
+| `JL_TOOLCHAIN_URL` | `https://pkgman.jieliapp.com/s/linux-toolchain`   | Toolchain download URL   |
+| `JL_INSTALL_DIR`   | `/opt/jieli`                                      | Toolchain install path   |
+| `JL_POSTBUILD_URL` | `https://pkgman.jieliapp.com/s/linux-postbuild`   | Postbuild download URL   |
+| `JL_UTILS_DIR`     | `/opt/utils`                                      | Postbuild install path   |
 
 If linking fails due to too many open files, raise the limit before building:
 
